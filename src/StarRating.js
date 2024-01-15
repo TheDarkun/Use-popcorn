@@ -18,7 +18,7 @@ const textStyle = {
 }
 
 const starStyle = {
-    width: "48px",
+    width: "24px",
     aspectRatio: "1",
     display: "block",
     cursor: "pointer"
@@ -38,7 +38,7 @@ export default function StarRating({onSetRating}) {
     return (
         <div style={containerStyle}>
             <div style={starContainerStyle}>
-                {Array.from({length : 5}, (_, i) => (
+                {Array.from({length : 10}, (_, i) => (
                     <Star 
                         key={i} 
                         onRate={() => handleRating(i+1)} 
@@ -47,8 +47,7 @@ export default function StarRating({onSetRating}) {
                         onMouseLeave={() => setTempRating(rating)}/>
                 ))}
             </div>
-            <p style={textStyle}>{messages[tempRating - 1] || ""}</p>
-            <button>+ Add to list</button>
+            <p style={textStyle}>{tempRating}</p>
         </div>
     )
 }
