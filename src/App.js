@@ -52,6 +52,11 @@ export default function App() {
         fetchData();
     }, [query])
     
+    function handleIsAdded() {
+        const watchedMovie = watched.find(movie => movie.imdbID === selectedId);
+        return !!watchedMovie;
+    }
+    
     return (
     <>
         <NavBar>
@@ -62,10 +67,17 @@ export default function App() {
             <Box>
                 {isLoading && error === "" && <Loader/>}
                 {error && <p className="error">{error}</p>}
-                {!isLoading && error === "" && <MovieList movies={movies} onSelectedMovie={(id) => setSelectedId(id)}/>}
+                {!isLoading && error === "" && <MovieList 
+                    movies={movies} 
+                    onSelectedMovie={(id) => setSelectedId(id)}/>}
             </Box>
             <Box>
-                {selectedId ? <SelectedMovie key={selectedId} selectedId={selectedId} onCloseMovie={() => setSelectedId(null)}/> :
+                {selectedId ? <SelectedMovie 
+                        key={selectedId} 
+                        selectedId={selectedId} 
+                        isAdded={handleIsAdded()}
+                        onCloseMovie={() => setSelectedId(null)} 
+                        onAddToWatched={(newWatched) => setWatched([...watched, newWatched])}/> :
                 <>
                     <WatchedSummary watched={watched} />
                     <WatchedList watched={watched}/>

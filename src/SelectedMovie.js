@@ -3,11 +3,12 @@ import StarRating from "./StarRating";
 import Loader from "./Loader";
 const KEY = "d07beb61"
 
-export default function SelectedMovie({selectedId, onCloseMovie}) {
+export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddToWatched}) {
 
     const [movie, setMovie] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-
+    const [rating, setRating] = useState(3);
+    
     const {
         Title: title,
         Year: year,
@@ -21,6 +22,20 @@ export default function SelectedMovie({selectedId, onCloseMovie}) {
         Genre: genre
     } = movie;
 
+    function handleAddWatched() {
+        const newWatched = {
+            imdbID: selectedId,
+            title,
+            year,
+            poster,
+            userRating: rating,
+            imdbRating: Number(imdbRating),
+            runtime: Number(runtime.split(" ").at(0))
+        }
+        onAddToWatched(newWatched)
+        onCloseMovie();
+    }
+    
     useEffect(() => {
         const getMovieDetails = async () => {
             try {
@@ -37,8 +52,11 @@ export default function SelectedMovie({selectedId, onCloseMovie}) {
 
         }
         getMovieDetails();
+        
     },  [])
 
+    
+    
     return (
         <div className="details">
             {isLoading ? <Loader/> :
@@ -57,9 +75,12 @@ export default function SelectedMovie({selectedId, onCloseMovie}) {
                         </div>
                     </header>
                     <section>
-                        <div className="rating">
-                            <StarRating/>
-                        </div>
+                        {isAdded || (
+                            <div className="rating">
+                                <StarRating onSetRating={(rating) => setRating(rating)}/>
+                                <button onClick={handleAddWatched} className="btn-add">Add to favorites 💚</button>
+                            </div>
+                        )}
                         <p><em>{plot}</em></p>
                         <p>Starring {actors}</p>
                         <p>Directed by {director}</p>
