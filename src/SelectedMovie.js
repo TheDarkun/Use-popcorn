@@ -40,6 +40,7 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
         const getMovieDetails = async () => {
             try {
                 setIsLoading(true);
+                document.title = "Loading...";
                 const response = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`);
                 const data = await response.json();
                 setMovie(data);
@@ -53,9 +54,15 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
         }
         getMovieDetails();
         
+        
     },  [])
 
-    
+    useEffect(() => {
+        if(title) document.title = `Movie: ${title}`;
+        return function() {
+            document.title = "usePopcorn";
+        }
+    }, [title])
     
     return (
         <div className="details">
