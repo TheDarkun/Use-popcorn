@@ -8,7 +8,7 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
     const [movie, setMovie] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [rating, setRating] = useState(3);
-    
+
     const {
         Title: title,
         Year: year,
@@ -35,13 +35,15 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
         onAddToWatched(newWatched)
         onCloseMovie();
     }
-    
+
     useEffect(() => {
+        const controller = new AbortController();
+
         const getMovieDetails = async () => {
             try {
                 setIsLoading(true);
                 document.title = "Loading...";
-                const response = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`);
+                const response = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`, {signal: controller.signal});
                 const data = await response.json();
                 setMovie(data);
             } catch (e) {
@@ -53,9 +55,12 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
 
         }
         getMovieDetails();
-        
-        
-    },  [])
+
+        return () => {
+            controller.abort();
+        }
+
+    },  [selectedId])
 
     useEffect(() => {
         if(title) document.title = `Movie: ${title}`;
@@ -63,7 +68,20 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
             document.title = "usePopcorn";
         }
     }, [title])
-    
+
+    useEffect(() => {
+
+        const callback = (e) => {
+            if (e.code === "Escape") onCloseMovie()
+        }
+        document.addEventListener("keydown", callback)
+
+        return () => {
+            document.removeEventListener("keydown",callback);
+        }
+
+    }, [])
+
     return (
         <div className="details">
             {isLoading ? <Loader/> :
@@ -73,10 +91,10 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
                         <img src={poster} alt={`Poster of ${movie}`}/>
                         <div className="details-overview">
                             <h2>{title}</h2>
-                            <p>{released} &bull;</p>
+                            <p>{released} &bull; {runtime}</p>
                             <p>{genre}</p>
                             <p>
-                                <span>⭐</span>
+                                <span>:star:</span>
                                 {imdbRating} IMBDb rating
                             </p>
                         </div>
@@ -85,7 +103,7 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
                         {isAdded || (
                             <div className="rating">
                                 <StarRating onSetRating={(rating) => setRating(rating)}/>
-                                <button onClick={handleAddWatched} className="btn-add">Add to favorites 💚</button>
+                                <button onClick={handleAddWatched} className="btn-add">Add to favorites :green_heart:</button>
                             </div>
                         )}
                         <p><em>{plot}</em></p>
