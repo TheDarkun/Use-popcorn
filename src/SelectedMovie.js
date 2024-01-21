@@ -37,28 +37,21 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
     }
 
     useEffect(() => {
-        const controller = new AbortController();
-
         const getMovieDetails = async () => {
             try {
                 setIsLoading(true);
                 document.title = "Loading...";
-                const response = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`, {signal: controller.signal});
+                const response = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`);
                 const data = await response.json();
                 setMovie(data);
-            } catch (e) {
-
-            } finally {
                 setIsLoading(false);
-
+            } catch(e){
+                console.log(e)
+            } finally{
+                setIsLoading(false);
             }
-
         }
         getMovieDetails();
-
-        return () => {
-            controller.abort();
-        }
 
     },  [selectedId])
 
