@@ -1,4 +1,4 @@
-﻿export default function Watched({movie}) {
+﻿export default function Watched({movie, onRemoveMovie}) {
     return (
         <li>
             <img src={movie.poster} alt={`${movie.title} poster`}/>
@@ -16,6 +16,12 @@
                     <span>⏳</span>
                     <span>{movie.runtime} min</span>
                 </p>
+                <button
+                    className="btn-delete"
+                    onClick={() => onRemoveMovie(movie)}
+                >
+                    &times;
+                </button>
             </div>
         </li>
     )

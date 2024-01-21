@@ -94,7 +94,7 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
                             <p>{released} &bull; {runtime}</p>
                             <p>{genre}</p>
                             <p>
-                                <span>:star:</span>
+                                <span>⭐</span>
                                 {imdbRating} IMBDb rating
                             </p>
                         </div>
@@ -103,7 +103,7 @@ export default function SelectedMovie({selectedId, isAdded, onCloseMovie, onAddT
                         {isAdded || (
                             <div className="rating">
                                 <StarRating onSetRating={(rating) => setRating(rating)}/>
-                                <button onClick={handleAddWatched} className="btn-add">Add to favorites :green_heart:</button>
+                                <button onClick={handleAddWatched} className="btn-add">Add to favorites 💚</button>
                             </div>
                         )}
                         <p><em>{plot}</em></p>

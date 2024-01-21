@@ -84,7 +84,7 @@ export default function App() {
                             onAddToWatched={(newWatched) => setWatched([...watched, newWatched])}/> :
                         <>
                             <WatchedSummary watched={watched} />
-                            <WatchedList watched={watched}/>
+                            <WatchedList watched={watched} onRemoveMovie={(removedMovie) => setWatched([...watched].filter(movie => movie !== removedMovie))}/>
                         </>}
                 </Box>
             </Main>

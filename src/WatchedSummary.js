@@ -16,15 +16,15 @@ export default function WatchedSummary({watched}) {
                 </p>
                 <p>
                     <span>⭐️</span>
-                    <span>{avgImdbRating}</span>
+                    <span>{Math.floor(avgImdbRating * 10) / 10}</span>
                 </p>
                 <p>
                     <span>🌟</span>
-                    <span>{avgUserRating}</span>
+                    <span>{Math.floor(avgUserRating * 10) / 10}</span>
                 </p>
                 <p>
                     <span>⏳</span>
-                    <span>{avgRuntime} min</span>
+                    <span>{Math.floor(avgRuntime * 10) / 10} min</span>
                 </p>
             </div>
         </div>
