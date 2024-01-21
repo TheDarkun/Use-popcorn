@@ -15,8 +15,12 @@ import WatchedList from "./WatchedList";
 const KEY = "d07beb61"
 
 export default function App() {
+    
     const [movies, setMovies] = useState([]);
-    const [watched, setWatched] = useState([]);
+    const [watched, setWatched] = useState(function () {
+        const result = localStorage.getItem("watched");
+        return result ? JSON.parse(result) : [];
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -55,6 +59,12 @@ export default function App() {
         }
     }, [query])
 
+
+    
+
+    useEffect(() => 
+        localStorage.setItem("watched", JSON.stringify(watched)),
+        [watched]);
 
     function handleIsAdded() {
         const watchedMovie = watched.find(movie => movie.imdbID === selectedId);
